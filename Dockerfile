@@ -1,13 +1,21 @@
+# Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install needed PHP extensions
+# Install necessary PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Enable Apache rewrite module
 RUN a2enmod rewrite
 
-# Copy all project files into Apache's default web root
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy project files to the container
 COPY . /var/www/html
 
 # Set recommended permissions
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Expose port 80 inside the container
+EXPOSE 80
